@@ -1,4 +1,4 @@
-module orders-service
+module notify-service
 
 go 1.19
 

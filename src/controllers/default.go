@@ -3,7 +3,7 @@ package controllers
 import (
 	"net/http"
 
-	"orders-service/helpers"
+	"notify-service/helpers"
 )
 
 func HealthCheck(w http.ResponseWriter, r *http.Request) {

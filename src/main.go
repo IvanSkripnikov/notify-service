@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 
-	"orders-service/helpers"
-	"orders-service/httphandler"
-	"orders-service/logger"
-	"orders-service/models"
+	"notify-service/helpers"
+	"notify-service/httphandler"
+	"notify-service/logger"
+	"notify-service/models"
 )
 
 func main() {

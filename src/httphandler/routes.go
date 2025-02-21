@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"regexp"
 
-	"orders-service/controllers"
+	"notify-service/controllers"
 )
 
 type route struct {
@@ -16,8 +16,7 @@ type route struct {
 var routes = []route{
 	// system
 	newRoute(http.MethodGet, "/health", controllers.HealthCheck),
-	// orders
-	newRoute(http.MethodGet, "/v1/orders/list", controllers.GetOrdersListV1),
-	newRoute(http.MethodGet, "/v1/orders/get/([0-9]+)", controllers.GetOrderV1),
-	newRoute(http.MethodPost, "/v1/orders/create", controllers.CreateOrderV1),
+	// notifications
+	newRoute(http.MethodGet, "/v1/notifications/list", controllers.GetNotificationsListV1),
+	newRoute(http.MethodGet, "/v1/notifications/get/([0-9]+)", controllers.GetNotificationsV1),
 }

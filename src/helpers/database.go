@@ -6,8 +6,8 @@ import (
 	"os"
 	"strings"
 
-	"orders-service/logger"
-	"orders-service/models"
+	"notify-service/logger"
+	"notify-service/models"
 
 	_ "github.com/go-sql-driver/mysql"
 )
