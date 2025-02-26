@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"net/http"
+	"strconv"
 	"strings"
 
 	"notify-service/logger"
@@ -53,7 +54,7 @@ func GetNotifications(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	query := "SELECT id, user_id, title, description, created FROM notifications WHERE user_id = " + string(UserID)
+	query := "SELECT id, user_id, title, description, created FROM notifications WHERE user_id = " + strconv.Itoa(UserID)
 	rows, err := DB.Query(query)
 	if err != nil {
 		logger.Error(err.Error())
