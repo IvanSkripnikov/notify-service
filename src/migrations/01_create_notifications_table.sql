@@ -4,3 +4,4 @@ CREATE TABLE IF NOT EXISTS notifications (
     title TEXT NOT NULL,
     description TEXT NOT NULL,
     created BIGINT UNSIGNED
+);
