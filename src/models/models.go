@@ -7,3 +7,11 @@ type Database struct {
 	Password string
 	DB       string
 }
+
+type Redis struct {
+	Address  string
+	Port     string
+	Password string
+	DB       int
+	Stream   string
+}

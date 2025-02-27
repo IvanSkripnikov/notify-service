@@ -1,8 +1,9 @@
 package main
 
 import (
-	"fmt"
+	"context"
 
+	"notify-service/events"
 	"notify-service/helpers"
 	"notify-service/httphandler"
 	"notify-service/logger"
@@ -18,14 +19,21 @@ func main() {
 	// настройка всех конфигов
 	config, err := models.LoadConfig()
 	if err != nil {
-		logger.Fatal(fmt.Sprintf("Config error: %v", err))
+		logger.Fatalf("Config error: %v", err)
 	}
 
 	// настройка коннекта к БД
 	_, err = helpers.InitDataBase(config.Database)
 	if err != nil {
-		logger.Fatal(fmt.Sprintf("Cant initialize DB: %v", err))
+		logger.Fatalf("Cant initialize DB: %v", err)
 	}
+
+	// настройка коннекта к redis
+	bus := events.MakeBus()
+	go helpers.Listen(bus)
+	helpers.InitRedis(context.Background(), config.Redis)
+
+	go helpers.ListenStream(helpers.HandleMessage, bus.Error)
 
 	// выполнение миграций
 	helpers.CreateTables()
