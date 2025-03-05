@@ -5,8 +5,9 @@ import (
 	"strconv"
 	"strings"
 
-	"notify-service/logger"
 	"notify-service/models"
+
+	logger "github.com/IvanSkripnikov/go-logger"
 )
 
 func GetNotificationsList(w http.ResponseWriter, _ *http.Request) {

@@ -21,11 +21,11 @@ linters-settings:
           - github.com/DATA-DOG/go-sqlmock
           - github.com/gavv/httpexpect/v2
           - github.com/go-sql-driver/mysql
+          - github.com/IvanSkripnikov/go-logger
           - github.com/IvanSkripnikov/notify-service/config
           - github.com/IvanSkripnikov/notify-service/controllers
           - github.com/IvanSkripnikov/notify-service/database
           - github.com/IvanSkripnikov/notify-service/helpers
-          - github.com/IvanSkripnikov/notify-service/logger
           - github.com/IvanSkripnikov/notify-service/models
           - io
           - log

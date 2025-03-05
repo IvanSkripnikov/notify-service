@@ -7,8 +7,9 @@ import (
 	"strconv"
 
 	"notify-service/events"
-	"notify-service/logger"
 	"notify-service/models"
+
+	logger "github.com/IvanSkripnikov/go-logger"
 
 	"github.com/redis/go-redis/v9"
 )

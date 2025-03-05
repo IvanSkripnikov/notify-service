@@ -6,8 +6,9 @@ import (
 	"notify-service/events"
 	"notify-service/helpers"
 	"notify-service/httphandler"
-	"notify-service/logger"
 	"notify-service/models"
+
+	logger "github.com/IvanSkripnikov/go-logger"
 )
 
 func main() {
