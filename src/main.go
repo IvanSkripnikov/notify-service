@@ -9,6 +9,7 @@ import (
 	"notify-service/models"
 
 	logger "github.com/IvanSkripnikov/go-logger"
+	migrator "github.com/IvanSkripnikov/go-migrator"
 )
 
 func main() {
@@ -37,7 +38,7 @@ func main() {
 	go helpers.ListenStream(helpers.HandleMessage, bus.Error)
 
 	// выполнение миграций
-	helpers.CreateTables()
+	migrator.CreateTables(helpers.DB)
 
 	// инициализация REST-api
 	httphandler.InitHTTPServer()
