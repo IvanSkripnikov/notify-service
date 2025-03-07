@@ -9,6 +9,7 @@ import (
 	"notify-service/events"
 	"notify-service/models"
 
+	"github.com/IvanSkripnikov/go-gormdb"
 	logger "github.com/IvanSkripnikov/go-logger"
 
 	"github.com/redis/go-redis/v9"
@@ -94,11 +95,16 @@ func HandleMessage(message redis.XMessage) {
 	notification.Title = title
 	notification.Description = description
 	notification.UserID, _ = strconv.Atoi(userID)
+	notification.Created = int(GetCurrentTimestamp())
 
 	logger.Debug(fmt.Sprintf("Message %s value: %v", message.ID, notification))
 
 	// записываем сообщение в БД
-	saveNotificationInDatabase(notification)
+	db := gormdb.GetClient(models.ServiceDatabase)
+	err := db.Create(&notification).Error
+	if err != nil {
+		logger.Errorf("Cant create notification message %v", err)
+	}
 
 	// удаляем сообщение из стрима
 	if errDel := DeleteMessage(message.ID); errDel != nil {
@@ -116,19 +122,4 @@ func DeleteMessage(id string) error {
 
 	logger.Infof("Message %s deleted from Redis", id)
 	return nil
-}
-
-func saveNotificationInDatabase(notification models.Notification) {
-	query := "INSERT INTO notifications (title, description, user_id, created) VALUES (?, ?, ?, ?)"
-	currentTimestamp := GetCurrentTimestamp()
-	rows, err := DB.Query(query, notification.Title, notification.Description, notification.UserID, currentTimestamp)
-
-	if err != nil {
-		logger.Errorf("Error saving notification in DB: %v", err)
-	}
-
-	defer func() {
-		_ = rows.Close()
-		_ = rows.Err()
-	}()
 }

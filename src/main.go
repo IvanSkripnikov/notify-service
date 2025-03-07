@@ -25,10 +25,7 @@ func main() {
 	}
 
 	// настройка коннекта к БД
-	_, err = helpers.InitDataBase(config.Database)
-	if err != nil {
-		logger.Fatalf("Cant initialize DB: %v", err)
-	}
+	helpers.InitDatabase(config.Database)
 
 	// настройка коннекта к redis
 	bus := events.MakeBus()

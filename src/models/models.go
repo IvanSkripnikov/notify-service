@@ -1,12 +1,6 @@
 package models
 
-type Database struct {
-	Address  string
-	Port     int
-	User     string
-	Password string
-	DB       string
-}
+const ServiceDatabase = "NotificationService"
 
 type Redis struct {
 	Address  string

@@ -2,40 +2,25 @@ package helpers
 
 import (
 	"net/http"
-	"strconv"
 	"strings"
 
 	"notify-service/models"
 
-	logger "github.com/IvanSkripnikov/go-logger"
+	"github.com/IvanSkripnikov/go-gormdb"
 )
 
 func GetNotificationsList(w http.ResponseWriter, _ *http.Request) {
 	category := "/v1/notifications/list"
 	var notifications []models.Notification
 
-	query := "SELECT id, user_id, title, description, created FROM notifications WHERE id > 0"
-	rows, err := DB.Query(query)
-	if err != nil {
-		logger.Error(err.Error())
-	}
-
-	defer func() {
-		_ = rows.Close()
-		_ = rows.Err()
-	}()
-
-	for rows.Next() {
-		notification := models.Notification{}
-		if err = rows.Scan(&notification.ID, &notification.UserID, &notification.Title, &notification.Description, &notification.Created); err != nil {
-			logger.Error(err.Error())
-			continue
-		}
-		notifications = append(notifications, notification)
+	db := gormdb.GetClient(models.ServiceDatabase)
+	err := db.Find(&notifications).Error
+	if checkError(w, err, category) {
+		return
 	}
 
 	data := ResponseData{
-		"data": notifications,
+		"response": notifications,
 	}
 	SendResponse(w, data, category, http.StatusOK)
 }
@@ -55,28 +40,14 @@ func GetNotifications(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	query := "SELECT id, user_id, title, description, created FROM notifications WHERE user_id = " + strconv.Itoa(UserID)
-	rows, err := DB.Query(query)
-	if err != nil {
-		logger.Error(err.Error())
-	}
-
-	defer func() {
-		_ = rows.Close()
-		_ = rows.Err()
-	}()
-
-	for rows.Next() {
-		notification := models.Notification{}
-		if err = rows.Scan(&notification.ID, &notification.UserID, &notification.Title, &notification.Description, &notification.Created); err != nil {
-			logger.Error(err.Error())
-			continue
-		}
-		notifications = append(notifications, notification)
+	db := gormdb.GetClient(models.ServiceDatabase)
+	err := db.Where("user_id = ?", UserID).Find(&notifications).Error
+	if checkError(w, err, category) {
+		return
 	}
 
 	data := ResponseData{
-		"data": notifications,
+		"response": notifications,
 	}
 	SendResponse(w, data, category, http.StatusOK)
 }
