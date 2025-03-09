@@ -80,6 +80,7 @@ func ListenStream(handler func(redis.XMessage), errCh chan<- error) {
 }
 
 func HandleMessage(message redis.XMessage) {
+	var err error
 	category := fmt.Sprint(message.Values["category"])
 	if category != "deal" {
 		logger.Warning("Unknown message category")
@@ -94,14 +95,17 @@ func HandleMessage(message redis.XMessage) {
 	var notification models.Notification
 	notification.Title = title
 	notification.Description = description
-	notification.UserID, _ = strconv.Atoi(userID)
+	notification.UserID, err = strconv.Atoi(userID)
+	if err != nil {
+		logger.Errorf("Cant convert UserID to int %v", err)
+	}
 	notification.Created = int(GetCurrentTimestamp())
 
 	logger.Debug(fmt.Sprintf("Message %s value: %v", message.ID, notification))
 
 	// записываем сообщение в БД
 	db := gormdb.GetClient(models.ServiceDatabase)
-	err := db.Create(&notification).Error
+	err = db.Create(&notification).Error
 	if err != nil {
 		logger.Errorf("Cant create notification message %v", err)
 	}

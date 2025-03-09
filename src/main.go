@@ -37,7 +37,6 @@ func main() {
 	// выполнение миграций
 	migrationModels := models.GetModels()
 	gormdb.ApplyMigrationsForClient(models.ServiceDatabase, migrationModels...)
-	//migrator.CreateTables(helpers.DB)
 
 	// инициализация REST-api
 	httphandler.InitHTTPServer()
