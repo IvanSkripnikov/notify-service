@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	gormdb "github.com/IvanSkripnikov/go-gormdb"
+	"gorm.io/gorm/schema"
 )
 
 type Config struct {
@@ -43,5 +44,11 @@ func GetRequiredVariables() []string {
 
 		// Обязательные переменные окружения для подключения к redis
 		"REDIS_ADDRESS", "REDIS_PORT", "REDIS_PASSWORD", "REDIS_DB_NUMBER", "REDIS_STREAM",
+	}
+}
+
+func GetModels() []schema.Tabler {
+	return []schema.Tabler{
+		Notification{},
 	}
 }

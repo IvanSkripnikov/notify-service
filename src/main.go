@@ -8,8 +8,8 @@ import (
 	"notify-service/httphandler"
 	"notify-service/models"
 
+	"github.com/IvanSkripnikov/go-gormdb"
 	logger "github.com/IvanSkripnikov/go-logger"
-	migrator "github.com/IvanSkripnikov/go-migrator"
 )
 
 func main() {
@@ -35,7 +35,9 @@ func main() {
 	go helpers.ListenStream(helpers.HandleMessage, bus.Error)
 
 	// выполнение миграций
-	migrator.CreateTables(helpers.DB)
+	migrationModels := models.GetModels()
+	gormdb.ApplyMigrationsForClient(models.ServiceDatabase, migrationModels...)
+	//migrator.CreateTables(helpers.DB)
 
 	// инициализация REST-api
 	httphandler.InitHTTPServer()
