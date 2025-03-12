@@ -35,11 +35,6 @@ func GetNotifications(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if !isExists("SELECT * FROM notifications WHERE user_id = ?", UserID) {
-		FormatResponse(w, http.StatusNotFound, category)
-		return
-	}
-
 	db := gormdb.GetClient(models.ServiceDatabase)
 	err := db.Where("user_id = ?", UserID).Find(&notifications).Error
 	if checkError(w, err, category) {
