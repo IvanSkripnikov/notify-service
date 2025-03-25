@@ -82,7 +82,7 @@ func ListenStream(handler func(redis.XMessage), errCh chan<- error) {
 func HandleMessage(message redis.XMessage) {
 	var err error
 	category := fmt.Sprint(message.Values["category"])
-	if category != "deal" {
+	if category != "deal" && category != "loyalty" {
 		logger.Warning("Unknown message category")
 		return
 	}
