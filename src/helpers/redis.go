@@ -9,8 +9,7 @@ import (
 	"notify-service/events"
 	"notify-service/models"
 
-	"github.com/IvanSkripnikov/go-gormdb"
-	logger "github.com/IvanSkripnikov/go-logger"
+	"github.com/IvanSkripnikov/go-logger"
 
 	"github.com/redis/go-redis/v9"
 )
@@ -104,8 +103,7 @@ func HandleMessage(message redis.XMessage) {
 	logger.Debug(fmt.Sprintf("Message %s value: %v", message.ID, notification))
 
 	// записываем сообщение в БД
-	db := gormdb.GetClient(models.ServiceDatabase)
-	err = db.Create(&notification).Error
+	err = GormDB.Create(&notification).Error
 	if err != nil {
 		logger.Errorf("Cant create notification message %v", err)
 	}
@@ -114,6 +112,7 @@ func HandleMessage(message redis.XMessage) {
 	if errDel := DeleteMessage(message.ID); errDel != nil {
 		logger.Error("Cant delete message " + message.ID + " from redis stream")
 	}
+	MessagesTotal.Inc()
 }
 
 // DeleteMessage Удалить сообщение из стрима.

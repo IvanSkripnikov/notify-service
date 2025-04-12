@@ -20,6 +20,12 @@ var (
 			Help: "Total number of HTTP requests.",
 		},
 	)
+	MessagesTotal = prometheus.NewCounter(
+		prometheus.CounterOpts{
+			Name: "sent_messages_total",
+			Help: "Total number of sent messages.",
+		},
+	)
 	ResponseHttpStatus = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
 			Name: "response_http_status",
@@ -51,5 +57,5 @@ func addHttpStatusCodeToPrometheus(httpStatusCode int) {
 }
 
 func RegisterCommonMetrics() {
-	prometheus.MustRegister(RequestsByMethodTotal, RequestsTotal, ResponseHttpStatus, RequestLatencyHistogram, RequestLatencySummary)
+	prometheus.MustRegister(RequestsByMethodTotal, RequestsTotal, ResponseHttpStatus, RequestLatencyHistogram, RequestLatencySummary, MessagesTotal)
 }
